@@ -19,16 +19,27 @@ r_leg = c.create_rectangle(123, 125, 130, 145, fill="black")
 eye = c.create_rectangle(123, 125, 127, 129, fill="white")
 eye_offset = 1
 
+character = [torso,
+             l_leg,
+             r_leg,
+             eye,
+]
+
 # box
 boxik = c.create_rectangle(150, 125, 170, 145)
+boxes = [boxik]
 
+# platforms
+p_width = 250
+platform = c.create_rectangle(0, 145, p_width, 147, fill="black")
 
 
 objects = [torso,
              l_leg,
              r_leg,
              eye,
-             boxik
+             boxik,
+             platform
 ]
 
 
@@ -37,6 +48,7 @@ objects = [torso,
 
 movespeed = 30
 dir = 1
+phew = 0
 
 def move_right(event):
     global dir
@@ -66,7 +78,7 @@ def move_left(event):
 ### when my brain came up with this function
 
 def upd(event):
-    global info_x, info_y
+    global info_x, info_y, phew
     global eye_offset
     if info_x != 1:
         if info_x != root.winfo_width() or info_y != root.winfo_height():
@@ -87,16 +99,37 @@ def upd(event):
     else:
         info_x = root.winfo_width()
         info_y = root.winfo_height()
+        phew = 1
 
 
 
 
 info_x = root.winfo_width()
 info_y = root.winfo_height()
-print("the initial resolution is, for some reason:", root.winfo_width(), root.winfo_height())
+print("the initial resolution, for some reason, is:", root.winfo_width(), root.winfo_height())
 
+def updatilka():
+    x, y, x1, y1 = c.coords(eye)
+    for b in boxes:
+        bx, by, bx1, by1 = c.coords(b)
+        px, py, px1, py1 = c.coords(platform)
+        dx = (x/2 + x1/2) - (bx/2 + bx1/2)
+        dx2 = (px/2 + px1/2) - (bx/2 + bx1/2)
+        if abs(dx) <= 15 * root.winfo_width() / 250:
+            #print(dx2)
+            if dir == 0:
+                c.move(b,-movespeed * root.winfo_width() / 250, 0)
+            else:
+                c.move(b,movespeed * root.winfo_width() / 250, 0)
+            break
+        elif abs(dx2) >= (p_width / 2) * root.winfo_width() / 300 and phew == 1:
+            #print((p_width / 2) * root.winfo_width() / 300)
+            c.move(b, 0, 5)
+            break
+        
+    root.after(10, updatilka)
 
-
+updatilka()
 root.bind("<Left>", move_left)
 root.bind("<Right>", move_right)
 root.bind("<Configure>", upd)
