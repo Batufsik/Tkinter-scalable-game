@@ -3,4 +3,4 @@
 - arrow keys to move left/right
 - resize the window scale the whole canvas (big feature, NASA will totally hire me)
   
-![](https://media.giphy.com/media/psK1R8jEA7bxH19poR/giphy.gif)
+![2024-10-0514-41-13-ezgif com-optimize](https://github.com/user-attachments/assets/dd9b4fc1-9a3c-4896-8acc-0d42d9603888)
