@@ -110,9 +110,13 @@ print("the initial resolution, for some reason, is:", root.winfo_width(), root.w
 
 def updatilka():
     x, y, x1, y1 = c.coords(eye)
+    px, py, px1, py1 = c.coords(platform)
+    dx3 = (px/2 + px1/2) - (x/2 + x1/2)
+    if abs(dx3) >= (p_width / 2) * root.winfo_width() / 300 and phew == 1:
+        for part in character:
+            c.move(part, 0, 5 * root.winfo_width() / 400)
     for b in boxes:
         bx, by, bx1, by1 = c.coords(b)
-        px, py, px1, py1 = c.coords(platform)
         dx = (x/2 + x1/2) - (bx/2 + bx1/2)
         dx2 = (px/2 + px1/2) - (bx/2 + bx1/2)
         if abs(dx) <= 15 * root.winfo_width() / 250:
