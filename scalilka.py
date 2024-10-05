@@ -10,39 +10,56 @@ root.title("Scalilka")
 c = tk.Canvas(root, width=300, height=300, bg="white")
 c.pack(fill="both", expand=True)
 
+######## Game objects ##########
+
+# character
 torso = c.create_rectangle(110, 120, 130, 140, fill="black")
 l_leg = c.create_rectangle(110, 125, 117, 145, fill="black")
 r_leg = c.create_rectangle(123, 125, 130, 145, fill="black")
 eye = c.create_rectangle(123, 125, 127, 129, fill="white")
+eye_offset = 1
 
-character = [torso,
+# box
+boxik = c.create_rectangle(150, 125, 170, 145)
+
+
+
+objects = [torso,
              l_leg,
              r_leg,
-             eye
+             eye,
+             boxik
 ]
 
 
-movespeed = 50
+#############################
+
+
+movespeed = 30
 dir = 1
 
 def move_right(event):
     global dir
-    c.move(torso, movespeed, 0)
-    c.move(l_leg, movespeed, 0)
-    c.move(r_leg, movespeed, 0)
-    c.move(eye, movespeed, 0)
+    c.move(torso, movespeed * root.winfo_width() / 250, 0)
+    c.move(l_leg, movespeed * root.winfo_width()/ 250, 0)
+    c.move(r_leg, movespeed * root.winfo_width()/ 250, 0)
+    c.move(eye, movespeed * root.winfo_width()/ 250, 0)
     if dir == 0:
-        c.move(eye, 9, 0)
+        #ex, ey, ex2, ey2 = c.coords(eye)
+        #c.coords(eye, ex + 9, ey, ex2 + 9, ey2)
+        c.move(eye, 9 * root.winfo_width() / 250, 0)
         dir = 1
 
 def move_left(event):
     global dir
-    c.move(torso, -movespeed, 0)
-    c.move(l_leg, -movespeed, 0)
-    c.move(r_leg, -movespeed, 0)
-    c.move(eye, -movespeed, 0)
+    c.move(torso, -movespeed * root.winfo_width() / 250, 0)
+    c.move(l_leg, -movespeed * root.winfo_width() / 250, 0)
+    c.move(r_leg, -movespeed * root.winfo_width() / 250, 0)
+    c.move(eye, -movespeed * root.winfo_width() / 250, 0)
     if dir == 1:
-        c.move(eye, -9, 0)
+        #ex, ey, ex2, ey2 = c.coords(eye)
+        #c.coords(eye, ex - 9, ey, ex2 - 9, ey2)
+        c.move(eye, -9 * root.winfo_width() / 250, 0)
         dir = 0
 
 ### i felt like i gained some kind of astral knowledge
@@ -50,19 +67,23 @@ def move_left(event):
 
 def upd(event):
     global info_x, info_y
+    global eye_offset
     if info_x != 1:
         if info_x != root.winfo_width() or info_y != root.winfo_height():
 
             modifier_x = root.winfo_width()/info_x
             modifier_y = root.winfo_height()/info_y
+            eye_offset = modifier_x
             
-            for part in character:
+            for part in objects:
                 ocx, ocy, ocx2, ocy2 = c.coords(part)
                 c.coords(part, ocx* modifier_x, ocy* modifier_y, ocx2 * modifier_x, ocy2 * modifier_y)
             print("mods", modifier_x, modifier_y)
             print("new resolution", root.winfo_width(), root.winfo_height())
+            print("eye offset", eye_offset)
             info_x = root.winfo_width()
             info_y = root.winfo_height()
+            
     else:
         info_x = root.winfo_width()
         info_y = root.winfo_height()
